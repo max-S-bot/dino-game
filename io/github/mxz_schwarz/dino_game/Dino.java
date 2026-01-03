@@ -1,16 +1,27 @@
+package io.github.mxz_schwarz.dino_game;
+
 import java.awt.Image;
-import javax.swing.ImageIcon;
 
-public class Dino {
+class Dino {
 
-    private static final String DINO_PATH = "projects/dinosaur_game/imgs/dino";
-    private static final Image IMG = new ImageIcon(DINO_PATH + ".png").getImage();
+    private static final Image IMG;
+    private static final Image NO_L_IMG;
+    private static final Image NO_R_IMG;
+    static {
+        try {
+            var rsrc = Dino.class.getResource("imgs/dino.png");
+            var rsrcNL = Dino.class.getResource("imgs/dinoNoL.png");
+            var rsrcNR = Dino.class.getResource("imgs/dinoNoR.png");
+            IMG = javax.imageio.ImageIO.read(rsrc);
+            NO_L_IMG = javax.imageio.ImageIO.read(rsrcNL);
+            NO_R_IMG = javax.imageio.ImageIO.read(rsrcNR);
+        } catch (java.io.IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
+
     private static final int JUMP_TIME = 2000;
     private static final int LEEWAY = 8;
-    private static final Image NO_L_IMG = 
-    new ImageIcon(DINO_PATH + "NoL" + ".png").getImage();
-    private static final Image NO_R_IMG = 
-    new ImageIcon(DINO_PATH + "NoR" + ".png").getImage();
 
     private final int x;
     private final int y0;
@@ -20,7 +31,7 @@ public class Dino {
     private final double b;
     private long jumpStart = 0;
 
-    public Dino(int gameW, int groundY, int gameH) {
+    Dino(int gameW, int groundY, int gameH) {
         w = gameW / 13;
         h = gameH / 6;
         x = 2 * w;
@@ -30,7 +41,7 @@ public class Dino {
         //maxH = h/3;
     }
 
-    public boolean colliding(ImagePart o) {
+    boolean colliding(ImagePart o) {
         return o.x() + o.w 
             > x + LEEWAY 
             && x + w 
@@ -39,7 +50,7 @@ public class Dino {
             > o.y() + LEEWAY;
     }
 
-    public void startJumping() {
+    void startJumping() {
         if (jumping()) return;
         jumpStart = t();
     }
@@ -49,18 +60,18 @@ public class Dino {
         t() - jumpStart < JUMP_TIME;
     }
 
-    public int y() {
+    int y() {
         long tDif = t() - jumpStart;
         return y0 - (int) Math.max(a * sqr(tDif) + b * tDif, 0);
     }
 
-    public void draw (java.awt.Graphics g, DinoGame game) {
+    void draw (java.awt.Graphics g, DinoGame game) {
         Image img = jumping() ? IMG : 
         (byte) t() < 0 ? NO_L_IMG : NO_R_IMG;
         g.drawImage(img, x, y(), w, h, game);
     }
 
-    static double sqr(long x) {return Math.pow(x, 2);}
+    private static double sqr(long x) {return Math.pow(x, 2);}
 
-    static long t() {return System.currentTimeMillis();}
+    private static long t() {return System.currentTimeMillis();}
 }

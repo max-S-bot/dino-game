@@ -1,3 +1,5 @@
+package io.github.mxz_schwarz.dino_game;
+
 import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,9 +10,9 @@ import javax.swing.Timer;
  * I'm not too crazy about how 
  * much this manages parts.
  */
-public class DinoGame extends javax.swing.JPanel {
+class DinoGame extends javax.swing.JPanel {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         JFrame frame = new JFrame("Dinosaur Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 450);
@@ -32,7 +34,7 @@ public class DinoGame extends javax.swing.JPanel {
     private final Dino dino;
     private final Timer timer = new Timer(DELAY, e -> repaint());
 
-    public DinoGame(java.awt.Dimension d) {
+    DinoGame(java.awt.Dimension d) {
         w = d.width;
         h = d.height;
         score = new Score(w);
@@ -80,7 +82,7 @@ public class DinoGame extends javax.swing.JPanel {
         score.endGame();
     }
 
-    public void newGame() {
+    void newGame() {
         if (inProgress) endGame();
         inProgress = true;
         score.newGame();
@@ -92,7 +94,7 @@ public class DinoGame extends javax.swing.JPanel {
         g.fillRect(0, (int) (h*GRND_Y_MUL), w, (int) (h*GRND_H_MUL));
     }
 
-    public boolean inProgress() {
+    boolean inProgress() {
         return inProgress;
     }
 }

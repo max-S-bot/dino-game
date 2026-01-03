@@ -1,6 +1,8 @@
+package io.github.mxz_schwarz.dino_game;
+
 import java.util.Collection;
 
-public class Obstacle extends ImagePart {
+class Obstacle extends ImagePart {
 
     private static final double P = .14;
     private static final int MAX_OBSTS = 2;
@@ -14,13 +16,13 @@ public class Obstacle extends ImagePart {
         M_X, o.img);
     }
 
-    public static Obstacle makeObstOrNull(Obstacle last, int w, int groundY, int h) {
+    static Obstacle makeObstOrNull(Obstacle last, int w, int groundY, int h) {
         return last != null && w-last.x() < 
         w/MAX_OBSTS || Math.random() > P ?  null :
         new Obstacle(w, groundY, h, ObstInfo.getRand());
     }
 
-    public static void removeAll(Collection<ImagePart> parts) {
+    static void removeAll(Collection<ImagePart> parts) {
         parts.removeIf(p -> p instanceof Obstacle);
     }
 }

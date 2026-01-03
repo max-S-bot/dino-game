@@ -1,9 +1,11 @@
+package io.github.mxz_schwarz.dino_game;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import static java.lang.System.currentTimeMillis;
 
-public class Score {
+class Score {
     private static final Color BACKGROUND = Color.WHITE;
     private static final Color COLOR = Color.BLACK;
     private static final int FONT_SIZE = 20;
@@ -16,13 +18,13 @@ public class Score {
     private final int y;
     private long startTime = currentTimeMillis();
 
-    public Score(int w) {
+    Score(int w) {
         this.gameW = w;
         this.x = w - 5*FONT_SIZE;
         this.y = FONT_SIZE;
     }
 
-    public void draw(Graphics g, DinoGame game) {
+    void draw(Graphics g, DinoGame game) {
         g.setColor(BACKGROUND);
         g.fillRect(x, 0, gameW-x, 2*y);
         g.setColor(COLOR);
@@ -31,16 +33,16 @@ public class Score {
         g.drawString(format(score()), x, 2*y);
     } 
 
-    public int score() {
+    int score() {
         return (int) (currentTimeMillis()
         - startTime) / SCORE_DIV;
     }
 
-    public void newGame() {
+    void newGame() {
         startTime = currentTimeMillis();
     }
 
-    public void endGame() {
+    void endGame() {
         maxScore = Math.max(score(), maxScore);
     }
 
